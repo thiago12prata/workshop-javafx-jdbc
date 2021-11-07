@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import model.entities.Departamento;
 import model.services.DepartamentoService;
 
-public class DepartamentoCadastroController implements Initializable {
+public class ListarDepartamentosController implements Initializable {
 
 	
 	private DepartamentoService service;
@@ -35,7 +35,7 @@ public class DepartamentoCadastroController implements Initializable {
 	public void onBtNovoAction() {
 		System.out.println("bt novo");
 	}
-	public void setDepatamentoService(DepartamentoService service) {
+	public void setDepartamentoService(DepartamentoService service) {
 		this.service=service;
 	}
 	@Override
