@@ -43,7 +43,8 @@ public class ListarDepartamentosController implements Initializable {
 	@FXML
 	public void onBtNovoAction(ActionEvent event) {
 		Stage stagePai = Utils.stageAtual(event);
-		criarJanelaDialogo(stagePai, "/gui/CadastroDepartamento.fxml");
+		Departamento obj = new Departamento();
+		criarJanelaDialogo(obj, stagePai, "/gui/CadastroDepartamento.fxml");
 	}
 	public void setDepartamentoService(DepartamentoService service) {
 		this.service=service;
@@ -69,11 +70,15 @@ public class ListarDepartamentosController implements Initializable {
 		obsList = FXCollections.observableArrayList(list);
 		tableViewDepartamento.setItems(obsList);
 	}
-	private void criarJanelaDialogo(Stage stagePai, String nomeCompletoView) {
+	private void criarJanelaDialogo(Departamento obj, Stage stagePai, String nomeCompletoView) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeCompletoView));
 			Pane pane = loader.load();
 			Stage stageDialogo = new Stage();
+			
+			CadastroDepartamentosController controller = loader.getController();
+			controller.setDepartamento(obj);
+			controller.atualizarFormulario();
 			
 			stageDialogo.setTitle("Digite os dados do Departamento");
 			stageDialogo.setScene(new Scene(pane));
