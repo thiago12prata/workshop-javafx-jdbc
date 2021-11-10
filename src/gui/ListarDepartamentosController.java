@@ -78,6 +78,7 @@ public class ListarDepartamentosController implements Initializable {
 			
 			CadastroDepartamentosController controller = loader.getController();
 			controller.setDepartamento(obj);
+			controller.setDepartamentoService(new DepartamentoService());
 			controller.atualizarFormulario();
 			
 			stageDialogo.setTitle("Digite os dados do Departamento");
