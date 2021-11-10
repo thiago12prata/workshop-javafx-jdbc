@@ -3,7 +3,9 @@ package gui;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import db.DbException;
 import gui.listener.DataChangeListener;
@@ -18,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.Departamento;
+import model.exceptions.ValidacaoException;
 import model.services.DepartamentoService;
 
 public class CadastroDepartamentosController implements Initializable {
@@ -49,7 +52,6 @@ public class CadastroDepartamentosController implements Initializable {
 	
 	@FXML
 	public void onBtSalvarAction(ActionEvent event){
-		entidade = getDadosFormulario();
 		if (entidade==null) {
 			throw new IllegalStateException("Entida é nula");
 		}
@@ -57,37 +59,25 @@ public class CadastroDepartamentosController implements Initializable {
 			throw new IllegalStateException("Service não foi injetado");
 		}
 		try {
+			entidade = getDadosFormulario();
 			service.salvarOuAtualizar(entidade);
 			Utils.stageAtual(event).close();
 			notifyDataChangeListeners();
-		} catch (DbException e) {
+		} 
+		catch (ValidacaoException e) {
+			setMsgErro(e.getErros());
+		}
+		catch (DbException e) {
 			Alerts.showAlert("Erro ao Salvar objeto", null, e.getMessage(), AlertType.ERROR);
 		}
 	}
-	private void notifyDataChangeListeners() {
-		for(DataChangeListener listener: DataChangeListeners) {
-			listener.onDataChanged();
-		}
-	}
-	private Departamento getDadosFormulario() {
-		Departamento obj = new Departamento();
-		obj.setId(Utils.tryParseToInt(txtId.getText()));
-		obj.setNome(txtNome.getText());
-		return obj;
-	}
-
 	@FXML
 	public void onBtCancelarAction(ActionEvent event){
 		Utils.stageAtual(event).close();
 	}
-	
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		inicializarNodes();
-	}
-	private void inicializarNodes() {
-		Constraints.setTextFieldInteger(txtId);
-		Constraints.setTextFieldMaxLength(txtNome, 30);
 	}
 	public void atualizarFormulario() {
 		if (entidade==null) {
@@ -95,5 +85,39 @@ public class CadastroDepartamentosController implements Initializable {
 		}
 		txtId.setText(String.valueOf(entidade.getId()));
 		txtNome.setText(entidade.getNome());
+	}	
+	
+	private void notifyDataChangeListeners() {
+		for(DataChangeListener listener: DataChangeListeners) {
+			listener.onDataChanged();
+		}
 	}
+	private Departamento getDadosFormulario() {
+		Departamento obj = new Departamento();
+		
+		ValidacaoException exception = new ValidacaoException("Erro de Validação");
+		
+		obj.setId(Utils.tryParseToInt(txtId.getText()));
+		if(txtNome.getText() == null || txtNome.getText().trim().equals("")) {
+			exception.addErro("nome", "O campo não pode ser vazio");
+		}
+		obj.setNome(txtNome.getText());
+		
+		if (exception.getErros().size() > 0) {
+			throw exception;
+		}
+		return obj;
+	}
+	private void inicializarNodes() {
+		Constraints.setTextFieldInteger(txtId);
+		Constraints.setTextFieldMaxLength(txtNome, 30);
+	}
+	private void setMsgErro(Map<String, String> erros) {
+		Set<String> campos = erros.keySet();
+		
+		if (campos.contains("nome")) {
+			LabelErroName.setText(erros.get("nome"));
+		}
+	}
+
 }
