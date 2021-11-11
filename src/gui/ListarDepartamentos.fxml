@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="363.0" prefWidth="445.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ListarDepartamentosController">
+<VBox prefHeight="363.0" prefWidth="445.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ListarDepartamentosController">
    <children>
       <Label text="Registro de Departamento">
          <font>
@@ -28,6 +28,7 @@
         <columns>
           <TableColumn fx:id="tableCollumnId" prefWidth="75.0" text="Id" />
           <TableColumn fx:id="tableCollumnNome" prefWidth="75.0" text="Nome" />
+            <TableColumn fx:id="tableColumnEDIT" prefWidth="75.0" />
         </columns>
       </TableView>
    </children>
