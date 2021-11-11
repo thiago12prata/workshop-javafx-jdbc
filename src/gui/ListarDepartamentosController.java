@@ -3,9 +3,11 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.Main;
+import db.DbIntegrityException;
 import gui.listener.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -19,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -39,10 +42,12 @@ public class ListarDepartamentosController implements Initializable, DataChangeL
 	@FXML
 	private TableColumn<Departamento, String> tableCollumnNome;
 	@FXML
-	private Button btNovo;
-	@FXML
 	private TableColumn<Departamento, Departamento> tableColumnEDIT;
-	
+	@FXML
+	private TableColumn<Departamento, Departamento> tableColumnREMOVER;
+
+	@FXML
+	private Button btNovo;
 	private ObservableList<Departamento> obsList;
 
 	@FXML
@@ -74,11 +79,12 @@ public class ListarDepartamentosController implements Initializable, DataChangeL
 		if (service == null) {
 			throw new IllegalStateException("Serviço é igual a nulo");
 		}
-		
+
 		List<Departamento> list = service.findAll();
 		obsList = FXCollections.observableArrayList(list);
 		tableViewDepartamento.setItems(obsList);
 		iniciarEditButtons();
+		initRemoveButtons();
 	}
 
 	private void criarJanelaDialogo(Departamento obj, Stage stagePai, String nomeCompletoView) {
@@ -111,7 +117,7 @@ public class ListarDepartamentosController implements Initializable, DataChangeL
 	}
 
 	private void iniciarEditButtons() {
-		
+
 		tableColumnEDIT.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
 		tableColumnEDIT.setCellFactory(param -> new TableCell<Departamento, Departamento>() {
 			private final Button button = new Button("edit");
@@ -128,6 +134,41 @@ public class ListarDepartamentosController implements Initializable, DataChangeL
 						event -> criarJanelaDialogo(obj, Utils.stageAtual(event), "/gui/CadastroDepartamento.fxml"));
 			}
 		});
+	}
+
+	private void initRemoveButtons() {
+		tableColumnREMOVER.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+		tableColumnREMOVER.setCellFactory(param -> new TableCell<Departamento, Departamento>() {
+			private final Button button = new Button("remover");
+
+			@Override
+			protected void updateItem(Departamento obj, boolean empty) {
+				super.updateItem(obj, empty);
+				if (obj == null) {
+					setGraphic(null);
+					return;
+				}
+				setGraphic(button);
+				button.setOnAction(event -> removerEntity(obj));
+			}
+		});
+	}
+
+	private void removerEntity(Departamento obj) {
+		Optional<ButtonType> resultado = Alerts.showConfirmation("Confirmação", "Tem certeza que quer deletar?");
+		if (resultado.get()==ButtonType.OK) {
+			if (service==null) {
+				throw new IllegalStateException("Service é nulo");
+			}
+			try {
+				service.remover(obj);
+				atualizarTableView();
+			} 
+			catch (DbIntegrityException e) {
+				Alerts.showAlert("Erro ao remover objeto", null, e.getMessage(), AlertType.ERROR);
+			}
+			
+		}
 	}
 
 }
