@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -24,6 +27,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Vendedor;
 import model.services.VendedorService;
@@ -95,26 +100,26 @@ public class ListarVendedoresController implements Initializable, DataChangeList
 	}
 
 	private void criarJanelaDialogo(Vendedor obj, Stage stagePai, String nomeCompletoView) {
-//		try {
-//			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeCompletoView));
-//			Pane pane = loader.load();
-//			Stage stageDialogo = new Stage();
-//
-//			CadastroVendedorsController controller = loader.getController();
-//			controller.setVendedor(obj);
-//			controller.setVendedorService(new VendedorService());
-//			controller.subscribeDataChangeListener(this);
-//			controller.atualizarFormulario();
-//
-//			stageDialogo.setTitle("Digite os dados do Vendedor");
-//			stageDialogo.setScene(new Scene(pane));
-//			stageDialogo.setResizable(false);
-//			stageDialogo.initOwner(stagePai);
-//			stageDialogo.initModality(Modality.WINDOW_MODAL);
-//			stageDialogo.showAndWait();
-//		} catch (IOException e) {
-//			Alerts.showAlert("IO Exception", "Erro ao Carregar a tela", e.getMessage(), AlertType.ERROR);
-//		}
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeCompletoView));
+			Pane pane = loader.load();
+			Stage stageDialogo = new Stage();
+
+			CadastroVendedorController controller = loader.getController();
+			controller.setVendedor(obj);
+			controller.setVendedorService(new VendedorService());
+			controller.subscribeDataChangeListener(this);
+			controller.atualizarFormulario();
+
+			stageDialogo.setTitle("Digite os dados do Vendedor");
+			stageDialogo.setScene(new Scene(pane));
+			stageDialogo.setResizable(false);
+			stageDialogo.initOwner(stagePai);
+			stageDialogo.initModality(Modality.WINDOW_MODAL);
+			stageDialogo.showAndWait();
+		} catch (IOException e) {
+			Alerts.showAlert("IO Exception", "Erro ao Carregar a tela", e.getMessage(), AlertType.ERROR);
+		}
 	}
 
 	@Override
