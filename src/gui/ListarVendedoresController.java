@@ -1,6 +1,7 @@
 package gui;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -35,6 +36,12 @@ public class ListarVendedoresController implements Initializable, DataChangeList
 	@FXML
 	private TableColumn<Vendedor, Integer> tableCollumnId;
 	@FXML
+	private TableColumn<Vendedor, String> tableCollumnEmail;
+	@FXML
+	private TableColumn<Vendedor, Date> tableCollumnDataNasc;
+	@FXML
+	private TableColumn<Vendedor, Double> tableCollumnSalarioBase;
+	@FXML
 	private TableColumn<Vendedor, String> tableCollumnNome;
 	@FXML
 	private TableColumn<Vendedor, Vendedor> tableColumnEDIT;
@@ -64,7 +71,12 @@ public class ListarVendedoresController implements Initializable, DataChangeList
 	private void inicializarNodes() {
 		tableCollumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableCollumnNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-
+		tableCollumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+		tableCollumnDataNasc.setCellValueFactory(new PropertyValueFactory<>("dataNasc"));
+		Utils.formatTableColumnDate(tableCollumnDataNasc, "dd/MM/yyyy");
+		tableCollumnSalarioBase.setCellValueFactory(new PropertyValueFactory<>("salarioBase"));
+		Utils.formatTableColumnDouble(tableCollumnSalarioBase, 2);
+		
 		// Ajusta a tabela com a tela
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewVendedor.prefHeightProperty().bind(stage.heightProperty());
