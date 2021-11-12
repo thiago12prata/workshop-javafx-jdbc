@@ -106,6 +106,7 @@ public class ListarDepartamentosController implements Initializable, DataChangeL
 			stageDialogo.initModality(Modality.WINDOW_MODAL);
 			stageDialogo.showAndWait();
 		} catch (IOException e) {
+			e.printStackTrace();
 			Alerts.showAlert("IO Exception", "Erro ao Carregar a tela", e.getMessage(), AlertType.ERROR);
 		}
 	}
