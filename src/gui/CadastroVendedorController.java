@@ -1,9 +1,11 @@
 package gui;
 
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -149,7 +151,24 @@ public class CadastroVendedorController implements Initializable {
 			exception.addErro("nome", "O campo não pode ser vazio");
 		}
 		obj.setNome(txtNome.getText());
-
+		if (txtEmail.getText() == null || txtEmail.getText().trim().equals("")) {
+			exception.addErro("email", "O campo não pode ser vazio");
+		}
+		obj.setEmail(txtEmail.getText());
+		
+		if (dpDataNasc.getValue()==null) {
+			exception.addErro("dataNasc", "O campo não pose ser vazio");
+		}
+		else {
+			Instant instant = Instant.from(dpDataNasc.getValue().atStartOfDay(ZoneId.systemDefault()));
+			obj.setDataNasc(Date.from(instant));
+		}				
+		if (txtSalarioBase.getText() == null || txtSalarioBase.getText().trim().equals("")) {
+			exception.addErro("salarioBase", "O campo não pode ser vazio");
+		}
+		obj.setSalarioBase(Utils.tryParseToDouble(txtSalarioBase.getText()));
+		
+		obj.setDepartamento(comboBoxDepartamento.getValue());
 		if (exception.getErros().size() > 0) {
 			throw exception;
 		}
@@ -167,10 +186,11 @@ public class CadastroVendedorController implements Initializable {
 
 	private void setMsgErro(Map<String, String> erros) {
 		Set<String> campos = erros.keySet();
-
-		if (campos.contains("nome")) {
-			LabelErroName.setText(erros.get("nome"));
-		}
+		
+		LabelErroName.setText(campos.contains("nome") ? erros.get("nome") : "");
+		LabelErroEmail.setText(campos.contains("email") ? erros.get("email") : "");
+		LabelErroSalarioBase.setText(campos.contains("salarioBase") ? erros.get("salarioBase") : "");
+		LabelErroDataNasc.setText(campos.contains("dataNasc") ? erros.get("dataNasc") : "");	
 	}
 
 	public void carregarObjetosAssociados() {

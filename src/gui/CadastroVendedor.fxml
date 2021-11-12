@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="251.0" prefWidth="439.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CadastroVendedorController">
+<AnchorPane prefHeight="253.0" prefWidth="586.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CadastroVendedorController">
    <children>
-      <GridPane layoutX="36.0" layoutY="14.0" prefHeight="212.0" prefWidth="366.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <GridPane layoutX="36.0" layoutY="14.0" prefHeight="212.0" prefWidth="564.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="122.0" minWidth="10.0" prefWidth="98.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="232.0" minWidth="10.0" prefWidth="159.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="158.0" minWidth="10.0" prefWidth="109.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="232.0" minWidth="10.0" prefWidth="136.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="323.0" minWidth="10.0" prefWidth="301.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -33,24 +33,24 @@
             <Label text="Nome" GridPane.rowIndex="1" />
             <TextField fx:id="txtId" editable="false" GridPane.columnIndex="1" />
             <TextField fx:id="txtNome" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="LabelErroName" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <DatePicker fx:id="dpDataNasc" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="txtSalarioBase" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <ComboBox fx:id="comboBoxDepartamento" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <children>
                   <Button fx:id="btSalvar" mnemonicParsing="false" onAction="#onBtSalvarAction" text="Salvar" />
                   <Button fx:id="btCancelar" mnemonicParsing="false" onAction="#onBtCancelarAction" text="Cancelar" />
                </children>
             </HBox>
+            <Label fx:id="LabelErroName" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Label text="Email" GridPane.rowIndex="2" />
             <Label text="Data Nascimento" GridPane.rowIndex="3" />
             <Label text="Salario Base" GridPane.rowIndex="4" />
             <Label text="Departamento" GridPane.rowIndex="5" />
-            <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="txtSalarioBase" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <DatePicker fx:id="dpDataNasc" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label fx:id="LabelErroEmail" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Label fx:id="LabelErroDataNasc" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <Label fx:id="LabelErroSalarioBase" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <ComboBox fx:id="comboBoxDepartamento" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </children>
