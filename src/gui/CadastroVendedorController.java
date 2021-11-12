@@ -1,11 +1,16 @@
 package gui;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+
+import com.mysql.cj.util.Util;
 
 import db.DbException;
 import gui.listener.DataChangeListener;
@@ -17,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.Vendedor;
@@ -34,7 +40,19 @@ public class CadastroVendedorController implements Initializable {
 	@FXML
 	private TextField txtNome;
 	@FXML
+	private TextField txtEmail;
+	@FXML
+	private DatePicker dpDataNasc;
+	@FXML
+	private TextField txtSalarioBase;
+	@FXML
 	private Label LabelErroName;
+	@FXML
+	private Label LabelErroEmail;
+	@FXML
+	private Label LabelErroDataNasc;
+	@FXML
+	private Label LabelErroSalarioBase;
 	@FXML
 	private Button btSalvar;
 	@FXML
@@ -85,6 +103,14 @@ public class CadastroVendedorController implements Initializable {
 		}
 		txtId.setText(String.valueOf(entidade.getId()));
 		txtNome.setText(entidade.getNome());
+		txtEmail.setText(entidade.getEmail());
+		Locale.setDefault(Locale.US);
+		txtSalarioBase.setText(String.format("%.2f", entidade.getSalarioBase()));
+		txtNome.setText(entidade.getNome());
+		if (entidade.getDataNasc()!=null) {
+			dpDataNasc.setValue(LocalDate.ofInstant(entidade.getDataNasc().toInstant(),ZoneId.systemDefault()));
+		}
+		
 	}	
 	
 	private void notifyDataChangeListeners() {
@@ -110,7 +136,11 @@ public class CadastroVendedorController implements Initializable {
 	}
 	private void inicializarNodes() {
 		Constraints.setTextFieldInteger(txtId);
-		Constraints.setTextFieldMaxLength(txtNome, 30);
+		Constraints.setTextFieldMaxLength(txtNome, 70);
+		Constraints.setTextFieldDouble(txtSalarioBase);
+		Constraints.setTextFieldMaxLength(txtEmail, 60);
+		Utils.formatDatePicker(dpDataNasc, "dd/MM/yyyy");
+		
 	}
 	private void setMsgErro(Map<String, String> erros) {
 		Set<String> campos = erros.keySet();
